@@ -1,2 +1,0 @@
-# SparkCodeRepository
-Spark
