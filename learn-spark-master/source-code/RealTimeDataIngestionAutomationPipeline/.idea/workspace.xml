@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4ffdd552-4fac-4d7e-a9de-83eceed42879" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="enabledProfiles">
+      <list>
+        <option value="snapshots-and-staging" />
+        <option value="kubernetes-integration-tests" />
+        <option value="sbt" />
+        <option value="mesos" />
+        <option value="hive-thriftserver" />
+        <option value="sparkr" />
+        <option value="hadoop-provided" />
+        <option value="yarn" />
+        <option value="hadoop-3.1" />
+        <option value="hadoop-2.7" />
+        <option value="hadoop-cloud" />
+        <option value="scala-2.12" />
+        <option value="scala-2.11" />
+        <option value="hive-provided" />
+        <option value="docker-integration-tests" />
+        <option value="orc-provided" />
+        <option value="kubernetes" />
+        <option value="spark-ganglia-lgpl" />
+        <option value="parquet-provided" />
+        <option value="kinesis-asl" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1SKlneUiCJsqUArOgGxQZcof1gp" />
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SbtLocalSettings">
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$/../../../../ScalaWorkspace/Scala_Applied_Udemy_Course/exercises-applied" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../../ScalaWorkspace/Scala_Applied_Udemy_Course/exercises-applied-part3" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../learn-spark" value="PREVIEW" />
+      </map>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4ffdd552-4fac-4d7e-a9de-83eceed42879" name="Default Changelist" comment="" />
+      <created>1571320335797</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1571320335797</updated>
+    </task>
+    <servers />
+  </component>
+</project>

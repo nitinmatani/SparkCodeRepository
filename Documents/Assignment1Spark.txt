@@ -1,0 +1,28 @@
+#Assignment1
+
+inputFile = sc.textFile("/user/adiontherocks61278/temp.txt")
+def caseDetect(s):
+...     if s.isupper()==True:
+...             return s.lower()
+...     else:
+...             return s.upper()
+
+#case detection and change can also be done by swapcase() method 
+
+caseChange=inputFile.map(caseDetect)
+caseChange.collect()
+def startsWithHhOrIi(s):
+	if s.isupper()==True:
+		if s.startswith('H'):
+			return True
+		elif s.startswith('I'):
+			return True
+	else:
+		if s.startswith('h'):
+			return True
+		elif s.startswith('i'):
+			return True
+caseWithHhOrIi = caseChange.filter(startsWithHhOrIi)
+caseWithHhOrIi.collect()
+
+

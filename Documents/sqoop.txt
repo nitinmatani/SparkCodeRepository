@@ -1,0 +1,129 @@
+####################
+## sqoop
+#####################
+
+###################
+# mysql
+##################
+
+mysql -utraining -ptraining
+show databases;
+use loudacre;
+show tables;
+
+
+##################
+# sqoop
+################
+
+sqoop help
+
+sqoop list-tables --connect jdbc:mysql://localhost/loudacre --username training --password training
+
+sqoop import --help
+
+hdfs dfs -rm -r device
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table device
+
+hdfs dfs -rm -r /loudacre/accounts
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table accounts --target-dir '/loudacre/accounts'
+
+# warehouse
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table calllog --fields-terminated-by ':' --warehouse-dir '/loudacre'
+
+---------------------------------------------------------------------------------------
+# for increamental
+hdfs dfs -rm -r /loudacre/accounts
+# replace null with /n
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table accounts --target-dir '/loudacre/accounts' --null-non-string '\\N'
+
+# Run the add_new_accounts.py script to add the latest accounts to MySQL.
+$ $DEV1/exercises/sqoop/add_new_accounts.py
+
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --incremental append --null-non-string '\\N' --table accounts --target-dir /loudacre/accounts --check-column acct_num --last-value 97349
+------------------------------------------------------------------------------------------
+
+sqoop eval --query "SELECT * FROM webpage LIMIT 10" --connect jdbc:mysql://localhost/loudacre --username training --password training
+
+# optional
+# Use Sqoop to import only accounts where the person lives in California
+# (state = "CA") and has an active account (acct_close_dt IS NULL).
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table accounts --target-dir /loudacre/account-active-ca --where 'state = "CA" and acct_close_dt IS NULL'
+
+#################################
+# Extra reading
+################################
+
+# if dir already exist
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table calllog --fields-terminated-by ':' --warehouse-dir '/loudacre' --delete-target-dir
+
+# number of mapper 1
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table calllog --fields-terminated-by ':' --warehouse-dir '/loudacre' --delete-target-dir --num-mappers 1
+
+# append
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table calllog --fields-terminated-by ':' --warehouse-dir '/loudacre' --append --num-mappers 1
+
+# split by can used "select min(col1)"
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table calllog --fields-terminated-by ':' --warehouse-dir '/loudacre' --delete-target-dir --split-by call_num
+
+# split-by on char column
+sqoop import -Dorg.apache.sqoop.splitter.allow_text_splitter=true --connect jdbc:mysql://localhost/loudacre --username training --password training --table calllog --fields-terminated-by ':' --warehouse-dir '/loudacre' --delete-target-dir --split-by status 
+
+# sequence file
+sqoop import -Dorg.apache.sqoop.splitter.allow_text_splitter=true --connect jdbc:mysql://localhost/loudacre --username training --password training --table calllog --fields-terminated-by ':' --warehouse-dir '/loudacre' --delete-target-dir --as-sequencefile
+
+#compression
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table calllog --fields-terminated-by ':' --warehouse-dir '/loudacre' --delete-target-dir --as-textfile --compress --compression-codec org.apache.hadoop.io.compress.GzipCodec
+
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table calllog --fields-terminated-by ':' --warehouse-dir '/loudacre' --delete-target-dir --as-textfile --compress --compression-codec  --compression-codec org.apache.hadoop.io.compress.SnappyCodec
+
+## boundary Query
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table device --fields-terminated-by ':' --warehouse-dir '/loudacre' --delete-target-dir --as-textfile --boundary-query 'select 5,40'
+
+## columns
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table device --fields-terminated-by ':' --columns  device_num,device_type --warehouse-dir '/loudacre' --delete-target-dir --as-textfile 
+
+## query
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --fields-terminated-by ':' --query "select * from device where device_num > 20 AND \$CONDITIONS" --target-dir '/loudacre/device' --split-by device_num --delete-target-dir
+
+# NULL
+#deault behaviour
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table accounts --fields-terminated-by ':' --warehouse-dir '/loudacre' --delete-target-dir --as-textfile
+
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table accounts --fields-terminated-by ':' --warehouse-dir '/loudacre' --delete-target-dir --as-textfile  --null-non-string -1 --fields-terminated-by "\000" --lines-terminated-by ":"
+
+### increamental approach
+# using query
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --fields-terminated-by ':' --query "select * from accounts where acct_create_dt like '2013-%' AND \$CONDITIONS" --target-dir '/loudacre/account' --split-by acct_num --delete-target-dir 
+
+# using append
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --fields-terminated-by ':' --query "select * from accounts where acct_create_dt like '2014-%' AND \$CONDITIONS" --target-dir '/loudacre/account' --split-by acct_numn --append
+
+# using table and where clause
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --fields-terminated-by ':' --table accounts --where "acct_create_dt like '2014-%'" --target-dir '/loudacre/account' --split-by acct_num --append
+
+# Hive
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table calllog --hive-import --hive-database shivank --hive-table calllog_hive --num-mappers 2
+
+sqoop import --connect jdbc:mysql://localhost/loudacre --username training --password training --table calllog --hive-import --hive-database shivank --hive-table calllog_hive --num-mappers 2 --hive-overwrite
+
+# import all table
+#use --autoreset-to-one-mapper because sometime u dont have primary key
+# No --query, cols, --where not possible
+# increamental aproach not possible
+sqoop import-all-tables --connect jdbc:mysql://localhost/loudacre --username training --password training --warehouse-dir '/loudacre' --delete-target-dir
+
+# export
+# --input-fields-terminated-by  if delimiter is diff
+
+create table webpage_export(web_page_num int(11), web_page_file_name varchar(255), associated_files varchar(255));
+
+sqoop export --connect jdbc:mysql://localhost/loudacre --username training --password training  --export-dir /user/training/webpage --table webpage_export
+
+#
+# let say table columns are different and not matching
+create table webpage_export1(web_page_file_name varchar(255), web_page_num int(11),  associated_files varchar(255), description varchar(255));
+
+sqoop export --connect jdbc:mysql://localhost/loudacre --username training --password training  --export-dir /user/training/webpage --columns web_page_num,web_page_file_name,associated_files --table webpage_export1
+
+

@@ -1,0 +1,151 @@
+Assignment 1: Change the string to small if caps and upper if small and filter the records  Example
+
+
+
+Assignment 2: WholeTextFile  Example
+
+hadoop dfs -ls sandeep/mulfiles
+
+O/p :
+-rw-r--r--   1 edureka supergroup       7016 2016-09-26 02:14 sandeep/mulfiles/app.xml
+-rw-r--r--   1 edureka supergroup        217 2016-09-26 01:37 sandeep/mulfiles/assign
+-rw-r--r--   1 edureka supergroup       1071 2016-09-26 15:32 sandeep/mulfiles/assign1
+-rw-r--r--   1 edureka supergroup         36 2016-09-26 02:13 sandeep/mulfiles/sample.json
+
+val mulfile = sc.wholeTextFiles("sandeep/mulfiles")
+
+mulfile.collect 
+
+o/p :
+
+Array[(String, String)] = 
+Array((hdfs://localhost:8020/user/edureka/sandeep/mulfiles/app.xml,<enterprise>
+  <!-- Person Record -->
+  <person recstatus="1">
+   <sourcedid>
+    <source>Test</source>
+    <id>test-person-batchuid</id>
+   </sourcedid>
+   <userid password="11111111111111111111111111111111" pwencryptiontype="MD5">test-person-username</userid>
+   <name>
+    <fn>Mr. Test Person Jr.</fn>
+    <sort>Person, Test</sort>
+    <nickname>Tee</nickname>
+    <n>
+     <family>Person</family>
+     <given>Test</given>
+     <other>Foo</other>
+     <prefix>Mr.</prefix>
+     <suffix>Jr.</suffix>
+    </n>
+   </name>
+   <demographics>
+    <gender>2</gender>
+    <bday>2011-03-09</bday>
+   </demographics>
+   <email>test_person@example.com</ema...
+
+Assignment 3: Flat map Example.
+
+val flatmapex  = sc.textFile("sandeep/mulfiles/assign")
+
+flatmapex.collect
+
+o/p:Array[String] = Array(APACHE SPARK is a replacement of map reduce PROCESSING., PACHE SPARK is a replacement of map reduce PROCESSING., ACHE SPARK is a replacement of map reduce PROCESSING., HE SPARK is a replacement of map reduce PROCESSING.)
+
+val flatmapex  = sc.textFile("sandeep/mulfiles/assign").flatMap(_.split(" ")).distinct.collect
+
+o/p :Array[String] = Array(is, replacement, a, SPARK, HE, PROCESSING., ACHE, map, of, APACHE, PACHE, reduce)
+
+Assignment 4: Subtract, ZIP & Union Example
+
+val rdd1 = sc.textFile("sandeep/mulfiles/assign")
+rdd1.collect
+
+o/p :
+
+Array[String] = Array(APACHE SPARK is a replacement of map reduce PROCESSING., PACHE SPARK is a replacement of map reduce PROCESSING., ACHE SPARK is a replacement of map reduce PROCESSING., HE SPARK is a replacement of map reduce PROCESSING.)
+
+val rdd2 = sc.textFile("sandeep/mulfiles/assign2")
+rdd2.collect
+
+o/p:
+rray[String] = Array(APACHE SPARK is a replacement of map reduce PROCESSING., ACHE SPARK is a replacement of map reduce PROCESSING., HE SPARK is a replacement of map reduce PROCESSING.)
+
+val rdd3 = rdd1.subtract(rdd2)
+rdd3.collect
+
+o/p:
+Array[String] = Array(PACHE SPARK is a replacement of map reduce PROCESSING.)
+
+val rdd3 = rdd1.union(rdd2)
+rdd3.collect
+
+o/p:
+Array[String] = Array(APACHE SPARK is a replacement of map reduce PROCESSING., PACHE SPARK is a replacement of map reduce PROCESSING., ACHE SPARK is a replacement of map reduce PROCESSING., HE SPARK is a replacement of map reduce PROCESSING., APACHE SPARK is a replacement of map reduce PROCESSING., ACHE SPARK is a replacement of map reduce PROCESSING., HE SPARK is a replacement of map reduce PROCESSING.)
+
+val rdd4 = sc.textFile("sandeep/mulfiles/assign3")
+rdd4.collect
+
+o/p:
+Array[String] = Array(1, 2, 3, 4)
+
+val rdd5 = rdd1.zip(rdd4)
+rdd5.collect
+
+o/p:
+
+Array[(String, String)] = Array((APACHE SPARK is a replacement of map reduce PROCESSING.,1), (PACHE SPARK is a replacement of map reduce PROCESSING.,2), (ACHE SPARK is a replacement of map reduce PROCESSING.,3), (HE SPARK is a replacement of map reduce PROCESSING.,4))
+
+
+
+Assignment 5: Read the logs and get the o/p as: GET /ifruit_3 HTTP/1.0
+
+val logfile = sc.textFile("sandeep/weblog")
+logfile.take(2)
+val jpglog = logfile.filter(_.contains(".jpg"))
+jpglog.take(2)
+val jpglog1 = jpglog.map(_.split('"')(1))
+jpglog1.take(2)
+val jpglog2 = jpglog1.map(_.replaceAll(".jpg", ""))
+jpglog2.take(2)
+jpglog2.saveAsTextFile("/user/edureka/sandeep/weblog/output")
+
+
+Output:
+
+GET /ifruit_3 HTTP/1.0
+GET /ronin_s3 HTTP/1.0
+GET /ifruit_1 HTTP/1.0
+
+
+Assignment 6: Mapping single rows to multiple pairs using wholetextfiles and json files.
+
+Assignment 7: Reduce and Reducebykey with an example
+
+val mylist = List(1,2,3,4,5,10)
+mylist.reduce((a,b)=> a + B)
+o/p :Int = 25
+
+Reduce gives the commutative output of the list where as reducebykey gives commutative output using the key.
+
+val mydata = sc.textFile("sandeep/mulfiles/assign")
+mydata.collect
+
+o/p:
+Array[String] = Array(APACHE SPARK is a replacement of map reduce PROCESSING., PACHE SPARK is a replacement of map reduce PROCESSING., ACHE SPARK is a replacement of map reduce PROCESSING., HE SPARK is a replacement of map reduce PROCESSING.)
+
+
+mydata.flatMap(_.split(" ")).map((_,1)).reduceByKey(_+_).collect()
+
+Array[(String, Int)] = Array((is,4), (replacement,4), (a,4), (SPARK,4), (HE,1), (PROCESSING.,4), (ACHE,1), (map,4), (of,4), (APACHE,1), (PACHE,1), (reduce,4))
+
+
+
+
+
+
+
+
+
+
