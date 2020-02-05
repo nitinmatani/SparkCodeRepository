@@ -1,0 +1,53 @@
+Spark Native - Xml Files
+Spark-Sql - GSV Hotels 
+Spark-Streaming + Kafka - Yahoo
+
+xml,json,flat files - ETL Operations - MR, Pig ---> Hive/Impala 
+                                     - Spark   ---> Spark-Sql DF/Temp Table/Permanent Table in Hive Metastore 
+									 - Storm/Spark-Streaming+Kafka 
+Telecom Client
+Xml files 
+
+Informatica + Oracle
+15 minutes  SLA~20 minutes 
+
+5000-8000 xml files in 30 minutes window ~ 2 to 2.5 GB/30 minutes
+
+EdgeNode LFS ---> Unix Scripts ==> HDFS  -----> Small Files to SequenceFile with File Names as Keys/Contents as values  ---> XML Parser           ----> HBase ---> Hive Partitioned tables   
+                  1 to 1.5 minutes              WholeFileRecordReader/XmlInpuFormat/XmlOutputFormat MR 2.5 GB                Jackson XMl Parser                    Hive MR Jobs to load data
+				                                        4~5 minutes                                                          MR 8-9 minutes                        10 minutes 
+														
+                22 nodes 
+				256 GB RAM
+				20 physical core cpus
+				12 disks
+				
+				    1 to 1.5            ------> wholeFiles()  ---> spark native with xml parser and insert into hbase ---->    Hbase ~ Hive   
+					                                               2 minutes                                                   Spark-Sql 
+																                                                               3-4 minutes 
+																															   
+guestid, bookingdate, reservation status, length of stay, arrival date, departuredate   hotel 
+100      5th Dec      New ORDER           3               15th Dec      18th Dec        Marriot
+100      5th Dec      Check IN            3               15th Dec      18th Dec        Marriot 
+100      5th Dec      Check Out           3               15th Dec      18th Dec        Marriot 
+
+Hbase table - guest - cf : hotel_details
+{
+	"id":100,
+	last_update:15thDec,
+	"hotel":"Marriot",
+	upcoming_stays:[
+		
+	]
+    history:[
+		"Marriot":[{ 
+			"length_stay":3,
+			"reservation_status":CHECKED-OUT,
+			"arrival_date":15th Dec,
+			"departuredate":18th Dec 
+		}]
+	]
+}
+
+Yahoo Finance ---> Stock Details  ---> Visualization Tools and show the 
+Yahoo Finance ---> Kafka Producer ---> Spark-Streaming ---> Hbase ---> Hive + Elastic Search  ----> Kibana tool to visualize bar charts

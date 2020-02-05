@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Fri Dec 02 04:21:22 PST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.1 - (1616546): instance a816c00e-0158-bf7b-5c20-00000806f638 
+on database directory /home/cloudera/workspace_scala/YahooFinance/metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@ada9baf 
+Loaded from file:/home/cloudera/.m2/repository/org/apache/derby/derby/10.11.1.1/derby-10.11.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_67-b01
+user.dir=/home/cloudera/workspace_scala/YahooFinance
+os.name=Linux
+os.arch=amd64
+os.version=2.6.32-358.el6.x86_64
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
